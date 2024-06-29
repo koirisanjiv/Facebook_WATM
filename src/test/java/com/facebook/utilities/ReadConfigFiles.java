@@ -1,4 +1,4 @@
-package com.jkl.utilities;
+package com.facebook.utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +27,12 @@ public class ReadConfigFiles {
 	public String getApplicationUrl()
 	{
 		String url =  pro.getProperty("baseUrl");
+		return url;
+	}
+	
+	public String getApplicationUrlDebuggerMode()
+	{
+		String url =  pro.getProperty("baseUrlDebuggerMode");
 		return url;
 	}
 	

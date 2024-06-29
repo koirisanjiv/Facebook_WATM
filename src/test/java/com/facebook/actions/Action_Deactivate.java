@@ -1,4 +1,4 @@
-package com.jkl.actions;
+package com.facebook.actions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
-import com.jkl.ReUseAble.PageObject.ReUseAbleElement;
+import com.facebook.ReUseAble.PageObject.ReUseAbleElement;
 
 
 public class Action_Deactivate {

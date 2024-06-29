@@ -1,13 +1,13 @@
-package com.jkl.testCases;
+package com.facebook.testCases;
 
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.facebook.pageObject.PO_HomePage;
+import com.facebook.pageObject.PO_LoginPage;
 import com.github.javafaker.Faker;
-import com.jkl.pageObject.PO_HomePage;
-import com.jkl.pageObject.PO_LoginPage;
 
-public class TC_Home extends BaseClass{
+public class TC_Home extends BaseClass {
 	//HOME PAGE CONSTRUCTOR
 	public TC_Home() {
 		super();
@@ -20,10 +20,10 @@ public class TC_Home extends BaseClass{
 	public SoftAssert softAssert = new SoftAssert();
 	
 	
-	//TO CHECK HOME PAGE MENUS
+	//TO AI TOOLS MENUS
 	@Test(priority = 1)
-	public void test_HomePageElement() throws InterruptedException {
+	public void test_CheckAIToolSubMenus() throws InterruptedException {
 		hp = new PO_HomePage(driver);
-		hp.checkMenus();
+		hp.checkClickOnHomePageTabs();
 	}
 }

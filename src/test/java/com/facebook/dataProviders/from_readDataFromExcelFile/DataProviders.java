@@ -1,11 +1,11 @@
-package com.jkl.dataProviders.from_readDataFromExcelFile;
+package com.facebook.dataProviders.from_readDataFromExcelFile;
 
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jkl.utilities.ReadDataFromExcelFile;
+import com.facebook.utilities.ReadDataFromExcelFile;
 
 
 

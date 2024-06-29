@@ -1,4 +1,4 @@
-package com.jkl.testCases;
+package com.facebook.testCases;
 
 import java.io.IOException;
 import org.openqa.selenium.By;
@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import com.jkl.utilities.ReadConfigFiles;
+
+import com.facebook.utilities.ReadConfigFiles;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TestAutoIT {

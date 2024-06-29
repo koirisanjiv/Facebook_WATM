@@ -1,4 +1,4 @@
-package com.jkl.actions;
+package com.facebook.actions;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.asserts.SoftAssert;
 
-import com.jkl.ReUseAble.PageObject.ReUseAbleElement;
+import com.facebook.ReUseAble.PageObject.ReUseAbleElement;
 
 public class Action_ClickOnAnyColumnElementBasedOnSelectedRowItem {
 	

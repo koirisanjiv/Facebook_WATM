@@ -1,4 +1,4 @@
-package com.jkl.utilities;
+package com.facebook.utilities;
 
 import org.openqa.selenium.WebDriver;
 

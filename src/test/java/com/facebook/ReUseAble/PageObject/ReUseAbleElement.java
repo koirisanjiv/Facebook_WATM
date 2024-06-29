@@ -1,7 +1,8 @@
-package com.jkl.ReUseAble.PageObject;
+package com.facebook.ReUseAble.PageObject;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
@@ -40,6 +42,42 @@ public class ReUseAbleElement {
 
 	// ========START=======Actions Elements===================//
 
+	//TO SWTICH BETWEEN THE TABS
+	public void switchBetweenTabs(WebElement elementOnClickNewTabOpen) {
+		// Store the current window handle
+		String oldWindow = driver.getWindowHandle();
+
+		// Store all current window handles
+		Set<String> existingWindows = driver.getWindowHandles();
+
+		// Click the button that opens the new window
+		elementOnClickNewTabOpen.click();
+
+		// Wait for the new window to appear
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until((ExpectedCondition<Boolean>) driver -> driver.getWindowHandles().size() > existingWindows.size());
+
+		// Get all the window handles
+		Set<String> allWindows = driver.getWindowHandles();
+
+		// Find the new window handle
+		allWindows.removeAll(existingWindows); // Remove all the old window handles to get the new one
+
+		if (allWindows.size() == 1) {
+			String newWindow = allWindows.iterator().next();
+			driver.switchTo().window(newWindow);
+
+			logger.info("Switched to new window: " + newWindow);
+		} else {
+			logger.error("Expected one new window, but found " + allWindows.size());
+		}
+
+		logger.info("Old window: " + oldWindow);
+		logger.info("Clicked on btnLaunchApp");
+	}
+
+	
+	
 	// P360 PAGE NUMBER BASE ADDRESS
 	public boolean clickOnBtnPageNumber_RU(WebDriver dirver) throws InterruptedException {
 		boolean flag = false;
@@ -618,7 +656,8 @@ public class ReUseAbleElement {
 	// SELECT ANY CHECK BOX BY PASSING CHECKBOX NUMBER ,JKL
 	public boolean selectCheckbox_RU(WebDriver driver, int checkboxNumber) throws InterruptedException {
 		boolean flag = false;
-		String checkbox_address = "(//div[contains(@class,'w-max flex items-center gap-2')]//*[name()='svg'])[" + checkboxNumber + "]";
+		String checkbox_address = "(//div[contains(@class,'w-max flex items-center gap-2')]//*[name()='svg'])["
+				+ checkboxNumber + "]";
 		WebElement btnCheckbox_RU = driver.findElement(By.xpath(checkbox_address));
 		try {
 			if (!btnCheckbox_RU.isSelected()) {

@@ -1,10 +1,17 @@
-package com.jkl.pageObject;
+package com.facebook.pageObject;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -12,20 +19,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import com.jkl.ReUseAble.PageObject.ReUseAbleElement;
-import com.jkl.actions.Action_Activate;
-import com.jkl.actions.Action_Archive;
-import com.jkl.actions.Action_Edit;
-import com.jkl.actions.Action_Deactivate;
-import com.jkl.actions.Action_Restore;
-import com.jkl.actions.Action_View;
-import com.jkl.pageObject.pageLocators.PL_CustomersPage;
-import com.jkl.projectUtility.FindThreeDotAndClick;
+import com.facebook.ReUseAble.PageObject.ReUseAbleElement;
+import com.facebook.actions.Action_Activate;
+import com.facebook.actions.Action_Archive;
+import com.facebook.actions.Action_Deactivate;
+import com.facebook.actions.Action_Edit;
+import com.facebook.actions.Action_Restore;
+import com.facebook.actions.Action_View;
+import com.facebook.pageObject.pageLocators.PL_CreatePage;
+import com.facebook.projectUtility.FindThreeDotAndClick;
+import com.facebook.testCases.BaseClass;
+import com.facebook.utilities.ClickOnAnyButton;
+import com.facebook.utilities.NavigateToNewTab;
+import com.facebook.utilities.SetDataInTextInputField;
 
-public class PO_CustomersPage extends ReUseAbleElement {
+public class PO_CreatePage extends ReUseAbleElement {
 
 	// CONSTRUCTOR DECLARATION
 	public WebDriver driver;
@@ -36,170 +48,237 @@ public class PO_CustomersPage extends ReUseAbleElement {
 	public PO_LoginPage lp;
 	public Actions action;
 	public SoftAssert softAssert = new SoftAssert();
+	
+
+	public SetDataInTextInputField setDataInInputField = new SetDataInTextInputField();
+	public NavigateToNewTab navigateToNewTab = new NavigateToNewTab();
+	public ClickOnAnyButton clickOnAnyButton = new ClickOnAnyButton();
 
 	// CONSTRUCTOR CREATION
-	public PO_CustomersPage(WebDriver driver) {
+	public PO_CreatePage(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
 		jsExecutor = (JavascriptExecutor) driver;
 		ruae = new ReUseAbleElement(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 		lp = new PO_LoginPage(driver);
 		action = new Actions(driver);
 
 	}
 
-	// ALERT MESSAGES
-	public String pleaseEnterLabelName = "Please enter label.";
-	public String customersAdded = "Customer created successfully.";
-	public String customersUpdated = "Customer updated successfully.";
-	public String customerDeactivate = "Customer deactivated successfully.";
-	public String customerArchived = "Customer archived successfully.";
-	public String customerRestored = "Customer restored successfully.";
-	public String customerActivated = "Customer activated successfully.";
+	// ELEMENT LOCATORES
 
-	// USER | SUGGEGETIONS MESSAGES
-	public String customeNotFound = "No customers found";
-
-	// ======START======PAGE OBJECT FOR USER LEBELS AND ACTOIN METHODS==========//
-
-	@FindBy(xpath = PL_CustomersPage.ADD_CUSTOMER_NAME)
+	@FindBy(xpath = PL_CreatePage.addressTextareaWriteWhatYourMind)
 	@CacheLookup
-	public WebElement field_customerName;
+	public WebElement textareaWriteWhatYourMind;
 
-	public void setLablesName(String customerName) throws InterruptedException {
-		field_customerName.sendKeys(Keys.CONTROL, "a");
-		field_customerName.sendKeys(Keys.DELETE);
-		field_customerName.sendKeys(customerName);
-		Thread.sleep(3000);
-		logger.info("Entered customerName");
+	@FindBy(xpath = PL_CreatePage.addressBtnAddToYourPost)
+	@CacheLookup
+	public WebElement btnAddToYourPost;
 
+	@FindBy(xpath = PL_CreatePage.addressBtnTagPeople)
+	@CacheLookup
+	public WebElement btnTagPeople;
+
+	@FindBy(xpath = PL_CreatePage.addressBtnIconPhotoVideo)
+	@CacheLookup
+	public WebElement btnIconPhotoVideo;
+
+	@FindBy(xpath = PL_CreatePage.addressIconCheckIn)
+	@CacheLookup
+	public WebElement IconCheckIn;
+
+	@FindBy(xpath = PL_CreatePage.addressLiveVideo)
+	@CacheLookup
+	public WebElement iconLiveVideo;
+
+	@FindBy(xpath = PL_CreatePage.addressBtnGIF)
+	@CacheLookup
+	public WebElement btnGIF;
+
+	@FindBy(xpath = PL_CreatePage.addressBtnFeelingActivity)
+	@CacheLookup
+	public WebElement btnFeelingActivity;
+
+	@FindBy(xpath = PL_CreatePage.addressBtnClose)
+	@CacheLookup
+	public WebElement btnCross;
+
+	@FindBy(xpath = PL_CreatePage.addressBtnAddPhotoVideo)
+	@CacheLookup
+	public WebElement btnAddPhotoVideo;
+	
+	@FindBy(xpath = PL_CreatePage.addressBtnPost)
+	@CacheLookup
+	public WebElement btnPost;
+
+	public void setDescriptionAndTags(String descriptinAndTags) throws InterruptedException {
+		try {
+			textareaWriteWhatYourMind.sendKeys(Keys.CONTROL, "a");
+			textareaWriteWhatYourMind.sendKeys(Keys.DELETE);
+			textareaWriteWhatYourMind.sendKeys(descriptinAndTags);
+			Thread.sleep(2000);
+			logger.info("Entered descriptinAndTags");
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
 	}
 
-	// CUSTOMERS LIST
-	@FindBy(xpath = PL_CustomersPage.ADD_CUSTOMERS_LIST)
-	@CacheLookup
-	List<WebElement> listCustomers;
+	public void clickOnBtnAddToYourPost() throws InterruptedException {
+		try {
+			btnAddToYourPost.click();
+			logger.info("Click on btnAddToYourPost");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
 
-	// CUSTOMERS ROW LIST ADDRESS AND ACTION METHODS
-	// List_address: //div[contains(@class,'flex flex-col gap-2 items-center')]
-	// Pointer_address: //div[contains(@class, 'cursor-pointer')])[2]
-	// public String listUsreLabels_address = "//div[contains(@class,'p-4 flex gap-2
-	// flex-row')]";
+	public void clickOnBtnTagPeople() throws InterruptedException {
+		try {
+			btnTagPeople.click();
+			logger.info("Click on btnTagPeople");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
 
-	public int findCustomerFromRowListAndClickOnThreeDot(String customersName, String searchKey,
-			int searchKeyColumnIndex, boolean wantToClickOnThreeDot, boolean wantToclickOnFindSearckKey)
-			throws InterruptedException {
-		searchBox_1_RU(driver, searchKey);
-		if (!driver.getPageSource().contains("customeNotFound")) {
-			int listRowCount = 0;
-			try {
+	public void clickOnIconPhotoVideo() throws InterruptedException {
+		try {
+			btnIconPhotoVideo.click();
+			logger.info("Click on btnIconPhotoVideo");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+
+	public void clickOnIconCheckIn() throws InterruptedException {
+		try {
+			IconCheckIn.click();
+			logger.info("Click on IconCheckIn");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+
+	public void clickOnIconLiveVideo() throws InterruptedException {
+		try {
+			iconLiveVideo.click();
+			logger.info("Click on iconLiveVideo");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+
+
+
+	public void clickOnbtnGIF() throws InterruptedException {
+		try {
+			btnGIF.click();
+			logger.info("Click on btnGIF");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+	
+	public void clickOnBtnPost() throws InterruptedException {
+		try {
+			btnPost.click();
+			logger.info("Click on btnPost");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+
+
+	public void clickOnBtnAddPhotoVideo() {
+		try {
+			if (btnAddPhotoVideo.isDisplayed()) {
+				btnAddPhotoVideo.click();
 				Thread.sleep(2000);
-				listRowCount = FindThreeDotAndClick.findThreedActionButtonAndClick(PL_CustomersPage.ADD_CUSTOMERS_LIST,
-						listCustomers, driver, searchKey, searchKeyColumnIndex, wantToClickOnThreeDot,
-						wantToclickOnFindSearckKey);
-
-			} catch (Exception e) {
-				logger.info("Exception from findCustomersFromRowListAndClickOnThreeDot: " + e.getMessage());
 			}
-			logger.info("listRowCount: " + listRowCount);
-			return listRowCount;
-		} else {
-			logger.info(customeNotFound);
-			return -1;
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+
+	public void setWriteACatption(String yourPrompt) throws InterruptedException {
+		try {
+			btnFeelingActivity.sendKeys(Keys.CONTROL, "a");
+			btnFeelingActivity.sendKeys(Keys.DELETE);
+			btnFeelingActivity.sendKeys(yourPrompt);
+			Thread.sleep(2000);
+			logger.info("Entered yourPrompt");
+		} catch (Exception e) {
+			logger.info(e.getMessage());
 		}
 
 	}
+
+	public void clickOnBtnCross() throws InterruptedException {
+		try {
+			btnCross.click();
+			logger.info("Click on Cross button");
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+	}
+
 	// ======END======PAGE OBJECT FOR ADD USERS LEBELS ACTOIN METHODS==========//
 
-	// TO ADD AND UPDATE THE CUSTOMERS
-	public PO_HomePage addOrEditCustomer(String customersName, String searchKey, int searchKeyColumnIndex,
-			boolean wantToClickOnThreeDot, boolean wantToclickOnFindSearckKey) throws Throwable {
+	// TO CREATE A POST
+	public PO_CreatePage createNewPost(String writeDescriptionTags, String filePath) throws Throwable {
+
 		StackTraceElement stackTrace[] = Thread.currentThread().getStackTrace();
 		String callerMethodName = stackTrace[2].getMethodName();
-		logger.info("Caller methods name: " + callerMethodName);
-		boolean flag = false;
-		if (callerMethodName.equals("test_AddCustomer")) {
-			ruae.clickOnAdd_RU();
-		} else if (callerMethodName.equals("test_EditCustomer")) {
-
-			int isItemfindInList = findCustomerFromRowListAndClickOnThreeDot(customersName, searchKey,
-					searchKeyColumnIndex, wantToClickOnThreeDot, wantToclickOnFindSearckKey);
-			logger.info("Item found in row number: " + isItemfindInList);
-			if (isItemfindInList != -1) {
-				Action_Edit.edit(driver);
-			}
+		logger.info("Method called createNewPost and  Caller methods name: " + callerMethodName);
+		
+		setDescriptionAndTags(writeDescriptionTags);
+		clickOnBtnAddToYourPost();
+		clickOnIconPhotoVideo();
+		clickOnBtnAddPhotoVideo();
+	
+		if(uploadFileFromSystem()){
+			try {
+				logger.info("Wait for next 10 seconds");
+				Thread.sleep(10000);
+				clickOnBtnPost();
+			}catch(Exception e) {logger.warn("Exception from: createNewPost >> "+e.getMessage());}
+		}else {
+			clickOnBtnCross();
 		}
-
-		setLablesName(customersName);
-
-		flag = clickOnBtnSave_1_RU();
-
-		if (flag) {
-			if (driver.getPageSource().contains("Please add customer name.") || driver.getPageSource()
-					.contains("Customer names should allow only alphabets, with spaces and numbers optional.")) {
-				clickOnCancelButton_1_RU();
-				logger.info("Customer not added");
-				softAssert.assertTrue(false, "Customer is emplty");
-				return new PO_HomePage(driver);
-			} else {
-
-				String alertMsg = snakeAlertMessagesDisplayedContent_RU();
-				logger.info("Alert Message: " + alertMsg);
-
-				if (callerMethodName.equals("test_AddCustomer")) {
-					softAssert.assertEquals(alertMsg, customersAdded, "Check user customers added or not");
-				} else if (callerMethodName.equals("test_EditCustomer")) {
-					softAssert.assertEquals(alertMsg, customersUpdated, "Check user customers updated or not");
-				}
-
-			}
-		}
-
+		
+		
 		softAssert.assertAll();
-		return new PO_HomePage(driver);
+		return new PO_CreatePage(driver);
 	}
 
-	// TO VIEW/VISIT COSTOMER
-	public PO_HomePage viewCustomer() throws InterruptedException {
-		Action_View.view(driver);
+	// TO UPLOAD IMAGE
+	public boolean uploadFileFromSystem() throws InterruptedException, IOException {
+		StackTraceElement stackTrace[] = Thread.currentThread().getStackTrace();
+		String callerMethodName = stackTrace[2].getMethodName();
+		logger.info("Method called uploadFileFromSystem and Caller methods name: " + callerMethodName);
+		boolean isfileUplaoded = false;
+		try {
+			// Use ProcessBuilder to execute the AutoIt executable
+	        String autoItScriptPath = System.getProperty("user.dir") + "//AutoIT.exe";
+	        ProcessBuilder processBuilder = new ProcessBuilder(autoItScriptPath);
+	        processBuilder.directory(new File(System.getProperty("user.dir")));
+	        Process process = processBuilder.start();
+	        process.waitFor();
+	        isfileUplaoded = true;
+		}catch(Exception e) {logger.info("Exception uploadFileFromSystem: "+e.getMessage());}
+        
 		softAssert.assertAll();
-		return new PO_HomePage(driver);
-	}
+		return isfileUplaoded;
 
-	// TO VIEW/VISIT COSTOMER[TO RETURN ON TENANT PAGE OBJECT]
-	public PO_TenantsPage viewCustomerAndTenantPageOjbect() throws InterruptedException {
-		Action_View.view(driver);
-		softAssert.assertAll();
-		return new PO_TenantsPage(driver);
-	}
-
-	// TO DEACTIVATE THE CUSTOMERS
-	public PO_HomePage deactivateCustomer() throws InterruptedException {
-		Action_Deactivate.deactivate(driver, customerDeactivate);
-		softAssert.assertAll();
-		return new PO_HomePage(driver);
-	}
-
-	// TO ACTIVATE THE CUSTOMERS
-	public PO_HomePage activateCustomer() throws InterruptedException {
-		Action_Activate.activate(driver, customerActivated);
-		softAssert.assertAll();
-		return new PO_HomePage(driver);
-	}
-
-	// TO ARCHIVE THE CUSTOMERS
-	public PO_HomePage archiveCustomer() throws InterruptedException {
-		Action_Archive.archive(driver, customerArchived);
-		softAssert.assertAll();
-		return new PO_HomePage(driver);
-	}
-
-	// TO RESTORE THE CUSTOMERS
-	public PO_HomePage restoreCustomer() throws InterruptedException {
-		Action_Restore.restore(driver, customerRestored);
-		softAssert.assertAll();
-		return new PO_HomePage(driver);
 	}
 
 }

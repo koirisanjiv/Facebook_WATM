@@ -1,4 +1,7 @@
-package com.jkl.utilities;
+package com.facebook.utilities;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +15,7 @@ public class CustomizedChromeOptions {
 	public Logger logger = LogManager.getLogger(this.getClass());
 
 	public ChromeOptions customizedChromeOptions(boolean blockAdsAndNotifications, boolean headlessBrowsing,
-			boolean incognitoMode, boolean debuggerMode, int debuggerPort) {
+			boolean incognitoMode, boolean debuggerMode, int debuggerPort, boolean wantToTackActionOnFiles, String fileLocation) {
 		
 		// TO INITIALIZE CHROME OPTIONS
 		ChromeOptions options = new ChromeOptions(); // Use the correct class name and variable
@@ -41,6 +44,18 @@ public class CustomizedChromeOptions {
 			// TO USE CHROME DRIVER IN DEBUGGER MODE
 			options.setExperimentalOption("debuggerAddress", "localhost:"+debuggerPort);
 			logger.info("Entered into Debugging mode with port:"+debuggerPort);
+		}
+		
+		if(wantToTackActionOnFiles) {
+			
+			String downloadFilePath = fileLocation;
+	        Map<String, Object> actionsOnFiles = new HashMap<>();
+	        actionsOnFiles.put("download.default_directory", downloadFilePath);
+	        actionsOnFiles.put("download.prompt_for_download", false);
+	        actionsOnFiles.put("download.directory_upgrade", true);
+	        actionsOnFiles.put("safebrowsing.enabled", true);
+	        options.setExperimentalOption("prefs", actionsOnFiles);
+	        logger.info("File actions parameters set successfully");
 		}
 		
 		return options;

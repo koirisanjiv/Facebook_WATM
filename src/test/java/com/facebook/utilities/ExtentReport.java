@@ -1,4 +1,4 @@
-package com.jkl.utilities;
+package com.facebook.utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.jkl.testCases.BaseClass;
+import com.facebook.testCases.BaseClass;
 
 
 
@@ -46,13 +46,13 @@ public class ExtentReport extends BaseClass implements ITestListener {
         repName = "Tets-Report-" + timeStamp + ".html";
 
         sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir")+"/Reports/" + repName);
-        sparkReporter.config().setDocumentTitle("JKL Assets Report");
-        sparkReporter.config().setReportName("JKL Assets UI Testing Report");
+        sparkReporter.config().setDocumentTitle("Facebook");
+        sparkReporter.config().setReportName("Facebook");
         sparkReporter.config().setTheme(Theme.DARK);
 
         extentReports = new ExtentReports();
         extentReports.attachReporter(sparkReporter);
-        extentReports.setSystemInfo("Applcation name", "JKL Assets Management");
+        extentReports.setSystemInfo("Applcation name", "facebook.com");
         extentReports.setSystemInfo("System user name", System.getProperty("user.name"));
         extentReports.setSystemInfo("Operating system name", System.getProperty("os.name"));
         extentReports.setSystemInfo("Environment", "QA");

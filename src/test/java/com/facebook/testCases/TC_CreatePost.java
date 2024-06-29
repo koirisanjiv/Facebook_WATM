@@ -1,16 +1,20 @@
-package com.jkl.testCases;
+package com.facebook.testCases;
 
 import org.testng.annotations.Test;
 
+import com.facebook.ReUseAble.PageObject.ReUseAbleElement;
+import com.facebook.pageObject.PO_CreatePage;
+import com.facebook.pageObject.PO_HomePage;
+import com.facebook.pageObject.PO_LoginPage;
+import com.facebook.pageObject.PO_MenuOptionPage;
+import com.facebook.pageObject.pageLocators.PL_HomePage;
+import com.facebook.utilities.ClickOnAnyButton;
+import com.facebook.utilities.FindFileAndRename;
 import com.github.javafaker.Faker;
-import com.jkl.ReUseAble.PageObject.ReUseAbleElement;
-import com.jkl.pageObject.PO_CustomersPage;
-import com.jkl.pageObject.PO_HomePage;
-import com.jkl.pageObject.PO_LoginPage;
 
-public class TC_Customers extends BaseClass {
+public class TC_CreatePost extends BaseClass {
 	// HOME PAGE CONSTRUCTOR
-	public TC_Customers() {
+	public TC_CreatePost() {
 		super();
 	}
 
@@ -18,96 +22,38 @@ public class TC_Customers extends BaseClass {
 	public PO_LoginPage lp; // lp = LOGIN PAGE
 	public PO_HomePage hp; // hp = HOME PAGE
 	public Faker faker = new Faker();
-	public PO_CustomersPage cp; // MAIN USER LABLES PAGE
+	public PO_CreatePage po_cp; 
+	public PO_MenuOptionPage po_mop;
+	public ClickOnAnyButton clickOnAnyButton = new ClickOnAnyButton();
 
-	// VARIABLES TO ADD PAYEMNTS
-	String customerName = "Sri Ram Industries 2"; // "WESTWOOD_"+faker.name().firstName();
-	String edit_customerName = customerName+" Updated";
-	String searchKey = customerName; // "WESTWOOD READY 2";
-	boolean wantToClickOnThreeDot = true;
-	int searchKeyColumnIndex = 1;
-	boolean wantToClickOnSearchKey = false;
+	// VARIABLES
+	String writeYourDescriptionAndTags = "Create a cute baby";
+	String filePath = "LeonardoAI\\1234.jpg";
+	public FindFileAndRename findFileandRename = new FindFileAndRename();
 
-	// TO ADD CUSTOMERS
+	// TO GENERATE NEW POST
 	@Test(priority = 1)
-	public void test_AddCustomer() throws Throwable {
-		cp = callMeBeforePerformAnyAction();
-		cp.addOrEditCustomer(customerName, searchKey, searchKeyColumnIndex, wantToClickOnThreeDot,
-				wantToClickOnSearchKey);
+	public void test_CreatePost() throws Throwable {
+		po_cp = callMeBeforePerformAnyAction();
+		po_cp.createNewPost(writeYourDescriptionAndTags, filePath);
 	}
 
-	// TO EDIT CUSTOMERS
-	@Test(priority = 2)
-	public void test_EditCustomer() throws Throwable {
-		cp = callMeBeforePerformAnyAction();
-		cp.addOrEditCustomer(edit_customerName, searchKey, searchKeyColumnIndex, wantToClickOnThreeDot,
-				wantToClickOnSearchKey);
-		searchKey = edit_customerName;
-	}
-
-	// TO DEACTIVATE CUSTOMERS
-	@Test(priority = 3)
-	public void test_DeactivateCustomer() throws Throwable {
-		test_FindCustomerFromListAndClickOnThreeDotButton();
-		cp.deactivateCustomer();
-	}
-
-	// TO ACTIVATE CUSTOMERS
-	@Test(priority = 4)
-	public void test_ActivateCustomer() throws Throwable {
-		test_FindCustomerFromListAndClickOnThreeDotButton();
-		cp.activateCustomer();
-	}
-
-	// TO ARCHIVE CUSTOMERS
-	@Test(priority = 5)
-	public void test_ArchiveCustomer() throws Throwable {
-		test_FindCustomerFromListAndClickOnThreeDotButton();
-		cp.archiveCustomer();
-	}
-
-	// TO RESTORE CUSTOMERS
-	@Test(priority = 6)
-	public void test_RestoreCustomer() throws Throwable {
-		test_FindCustomerFromListAndClickOnThreeDotButton();
-		cp.restoreCustomer();
-	}
-
-	// TO VIEW CUSTOMERS
-	@Test(priority = 7)
-	public void test_ViewCustomer() throws Throwable {
-		test_FindCustomerFromListAndClickOnThreeDotButton();
-		cp.viewCustomer();
-	}
-
-	// TO FIND THE CUSTOMERS FROM THE LIST AND CLICK ON THE THREE DOT ACTION BUTTON
-	// @Test(priority = 10)
-	public void test_FindCustomerFromListAndClickOnThreeDotButton() throws Throwable {
-		cp = callMeBeforePerformAnyAction();
-		// logger.info("1");
-		StackTraceElement stackTraceElement[] = Thread.currentThread().getStackTrace();
-		String callerMethodName = stackTraceElement[2].getMethodName();
-		// logger.info("2");
-		if (callerMethodName.contains("test_Restore")) {
-			// logger.info("3");
-			ReUseAbleElement ruae = new ReUseAbleElement(driver);
-			// logger.info("callerMethodName: "+callerMethodName);
-			ruae.clickONBtnTooltip_RU("Show Archived", driver);
-			// logger.info("4");
-		}
-		// logger.info("5");
-		cp.findCustomerFromRowListAndClickOnThreeDot(customerName, searchKey, searchKeyColumnIndex,
-				wantToClickOnThreeDot, wantToClickOnSearchKey);
-	}
+	
 
 	// CALL ME IN EVERY @TEST METHODS EXCEPT LOGIN AND LOGOUT
-	public PO_CustomersPage callMeBeforePerformAnyAction() throws InterruptedException {
+	public PO_CreatePage callMeBeforePerformAnyAction() throws InterruptedException {
 		// TO ACCESS ANY ELEMENT IT CHECK IT IS COME BACK ON THE HOME PAGE FIRST
 		hp = new PO_HomePage(driver);
-		hp.clickOnMenuDashboard();
-		hp.clickOnMenuCustomer();
+		
+		//hp.clickOnFacebookLogo();
+		clickOnAnyButton.callMeToClickOnAnyButtonWithNameAndXpath(driver, "Facebook Logo",
+				PL_HomePage.addressFacebookLogo);
+		Thread.sleep(2000);
+		hp.clickOnMenuIcon();
+		Thread.sleep(2000);
+		po_mop.clickOnCreatePost();
 		Thread.sleep(4000);
-		return new PO_CustomersPage(driver);
+		return new PO_CreatePage(driver);
 	}
 
 }
