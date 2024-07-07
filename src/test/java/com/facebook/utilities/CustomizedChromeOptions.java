@@ -1,7 +1,5 @@
 package com.facebook.utilities;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,17 +44,17 @@ public class CustomizedChromeOptions {
 			logger.info("Entered into Debugging mode with port:"+debuggerPort);
 		}
 		
-		if(wantToTackActionOnFiles) {
-			
-			String downloadFilePath = fileLocation;
-	        Map<String, Object> actionsOnFiles = new HashMap<>();
-	        actionsOnFiles.put("download.default_directory", downloadFilePath);
-	        actionsOnFiles.put("download.prompt_for_download", false);
-	        actionsOnFiles.put("download.directory_upgrade", true);
-	        actionsOnFiles.put("safebrowsing.enabled", true);
-	        options.setExperimentalOption("prefs", actionsOnFiles);
-	        logger.info("File actions parameters set successfully");
-		}
+//		if(wantToTackActionOnFiles) {
+//			
+//			String downloadFilePath = fileLocation;
+//	        Map<String, Object> actionsOnFiles = new HashMap<>();
+//	        actionsOnFiles.put("download.default_directory", downloadFilePath);
+//	        actionsOnFiles.put("download.prompt_for_download", false);
+//	        actionsOnFiles.put("download.directory_upgrade", true);
+//	        actionsOnFiles.put("safebrowsing.enabled", true);
+//	        options.setExperimentalOption("prefs", actionsOnFiles);
+//	        logger.info("File actions parameters set successfully");
+//		}
 		
 		return options;
 	}

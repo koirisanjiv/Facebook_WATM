@@ -49,7 +49,7 @@ public class TC_CreatePost extends BaseClass {
 		clickOnAnyButton.callMeToClickOnAnyButtonWithNameAndXpath(driver, "Facebook Logo",
 				PL_HomePage.addressFacebookLogo);
 		Thread.sleep(2000);
-		hp.clickOnMenuIcon();
+		po_mop = hp.clickOnMenuIcon();
 		Thread.sleep(2000);
 		po_mop.clickOnCreatePost();
 		Thread.sleep(4000);

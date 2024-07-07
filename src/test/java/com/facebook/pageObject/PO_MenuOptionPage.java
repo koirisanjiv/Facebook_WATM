@@ -38,30 +38,21 @@ public class PO_MenuOptionPage extends ReUseAbleElement {
 
 	// HOMEPAGE CONSTRUCTOR CREATION
 	public PO_MenuOptionPage(WebDriver driver) {
-			super(driver);
-			this.driver = driver;
-			jsExecutor = (JavascriptExecutor) driver;
-			ruae = new ReUseAbleElement(driver);
-			wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-			lp = new PO_LoginPage(driver);
-			action = new Actions(driver);
+		super(driver);
+		this.driver = driver;
+		jsExecutor = (JavascriptExecutor) driver;
+		ruae = new ReUseAbleElement(driver);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		lp = new PO_LoginPage(driver);
+		action = new Actions(driver);
 
-		}
-
-	@FindBy(xpath = PL_MenuOptionPage.addressCreateMenuPostBtn)
-	@CacheLookup
-	WebElement optionCreatePost;
-	public PO_CreatePage clickOnCreatePost() throws InterruptedException {
-		try {
-			optionCreatePost.click();
-			Thread.sleep(2000);
-			logger.info("Clicked on the optionCreatePost");
-		} catch (Exception e) {
-			logger.info(e.getCause());
-		}
-
-		return new PO_CreatePage(driver);
 	}
 
+	public PO_CreatePage clickOnCreatePost() throws InterruptedException {
+		clickOnAnyButton.callMeToClickOnAnyButtonWithNameAndXpath(driver, "Post Button",
+				PL_MenuOptionPage.addressCreateMenuPostBtn);
+		Thread.sleep(2000);
+		return new PO_CreatePage(driver);
+	}
 
 }

@@ -26,9 +26,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseClass {
 
-	//FOR FILE ACTION
+	// FOR FILE ACTION
 	public static String fileLocation = "C:\\Users\\koiri\\Downloads";
-	
+
 	public static WebDriver driver;
 	public PO_HomePage hp;
 	public PO_LoginPage lp;
@@ -39,64 +39,65 @@ public class BaseClass {
 	public Logger logger = LogManager.getLogger(this.getClass());
 
 	// TO READ THE FILE FROM THE utilities.ReadConfigFiles
-		private ReadConfigFiles rcf = new ReadConfigFiles();
-		private String baseUrl = rcf.getApplicationUrl();
-		private String baseUrlDebuggerMode = rcf.getApplicationUrlDebuggerMode();
+	private ReadConfigFiles rcf = new ReadConfigFiles();
+	private String baseUrl = rcf.getApplicationUrl();
+	private String baseUrlDebuggerMode = rcf.getApplicationUrlDebuggerMode();
 
-		// WHILE COMMENTING THIS TWO LINE ENSURES FIRST, THIS TWO PARAMETER PASS THROUGH
-		// DATA PROVIDES METHODS FOR THAT WHERE IT USING PASS THERE @DATAPROVIDER NAME
-		private String userEmail = rcf.getUserEmail();
-		private String userPassword = rcf.getUserPassword();
-		private String adminEmail = rcf.getAdminEmail();
-		private String adminPassword = rcf.getAdminPassword();
+	// WHILE COMMENTING THIS TWO LINE ENSURES FIRST, THIS TWO PARAMETER PASS THROUGH
+	// DATA PROVIDES METHODS FOR THAT WHERE IT USING PASS THERE @DATAPROVIDER NAME
+	private String userEmail = rcf.getUserEmail();
+	private String userPassword = rcf.getUserPassword();
+	private String adminEmail = rcf.getAdminEmail();
+	private String adminPassword = rcf.getAdminPassword();
 
-		// FAKER LIBRARY TO GENERATE RADOM DATA FOR THE TEST
-		public Faker faker = new Faker();
+	// FAKER LIBRARY TO GENERATE RADOM DATA FOR THE TEST
+	public Faker faker = new Faker();
 
-		// DATA FOR BROWSER SETTINGS FROM TEXT.XML FILES
-		private boolean wantToByPassLoginLogout;
-		private boolean wantToEnableDebuggerMode;
-		private int debuggerPort;
-		private boolean incognitoMode;
-		private boolean headerLessBrowsing;
-		private boolean wantToBlockAdsAndNotifications;
+	// DATA FOR BROWSER SETTINGS FROM TEXT.XML FILES
+	private boolean wantToByPassLoginLogout;
+	private boolean wantToEnableDebuggerMode;
+	private int debuggerPort;
+	private boolean incognitoMode;
+	private boolean headerLessBrowsing;
+	private boolean wantToBlockAdsAndNotifications;
+	private boolean wantToTakeActionOnFile = false;
 
-		@BeforeTest
-		public void getDataFromTestNg(ITestContext context) {
-			// TO ENABLE/DISABLE DEBUGGGER MODE
-			String paramEnableDisableDebuggerMode = context.getCurrentXmlTest().getParameter("enableDisableDebuggerMode");
-			String[] debuggerModeAndPort = paramEnableDisableDebuggerMode.split(",");
-			wantToEnableDebuggerMode = Boolean.parseBoolean(debuggerModeAndPort[0].trim());
-			debuggerPort = Integer.parseInt(debuggerModeAndPort[1].trim());
-			logger.info("wantToEnableDebuggerMode: " + wantToEnableDebuggerMode + " And debugger post: " + debuggerPort);
+	@BeforeTest
+	public void browserSettingAndLogin(ITestContext context) {
+		// TO ENABLE/DISABLE DEBUGGGER MODE
+		logger.info("Browser and Login-Logout Settings");
+		String paramEnableDisableDebuggerMode = context.getCurrentXmlTest().getParameter("enableDebuggerMode");
+		String[] debuggerModeAndPort = paramEnableDisableDebuggerMode.split(",");
+		wantToEnableDebuggerMode = Boolean.parseBoolean(debuggerModeAndPort[0].trim());
+		debuggerPort = Integer.parseInt(debuggerModeAndPort[1].trim());
+		logger.info("wantToEnableDebuggerMode: " + wantToEnableDebuggerMode + " And debugger post: " + debuggerPort);
 
-			// FOR LOGIN BYPASS
-			String paramLoginByPass = context.getCurrentXmlTest().getParameter("wantToByPassLoginLogout");
-			wantToByPassLoginLogout = Boolean.parseBoolean(paramLoginByPass);
-			logger.info("wantToByPassLoginLogout: " + wantToByPassLoginLogout);
+		// FOR LOGIN BYPASS
+		String paramLoginByPass = context.getCurrentXmlTest().getParameter("wantToByPassLoginLogout");
+		wantToByPassLoginLogout = Boolean.parseBoolean(paramLoginByPass);
+		logger.info("wantToByPassLoginLogout: " + wantToByPassLoginLogout);
 
-			// FOR INCOGNITO MODE
-			String paramIncogenitoModde = context.getCurrentXmlTest().getParameter("incognitoMode");
-			incognitoMode = Boolean.parseBoolean(paramIncogenitoModde);
-			logger.info("incognitoMode: " + incognitoMode);
+		// FOR INCOGNITO MODE
+		String paramIncogenitoModde = context.getCurrentXmlTest().getParameter("incognitoMode");
+		incognitoMode = Boolean.parseBoolean(paramIncogenitoModde);
+		logger.info("incognitoMode: " + incognitoMode);
 
-			// FOR HEADERLESS BROWSING
-			String paramHeaderLessBrowsing = context.getCurrentXmlTest().getParameter("headerLessBrowsing");
-			headerLessBrowsing = Boolean.parseBoolean(paramHeaderLessBrowsing);
-			logger.info("headerLessBrowsing: " + headerLessBrowsing);
+		// FOR HEADERLESS BROWSING
+		String paramHeaderLessBrowsing = context.getCurrentXmlTest().getParameter("headerLessBrowsing");
+		headerLessBrowsing = Boolean.parseBoolean(paramHeaderLessBrowsing);
+		logger.info("headerLessBrowsing: " + headerLessBrowsing);
 
-			// TO DISABLE ADS AND NOTIFICATIONS
-			String paramWantToBlockAdsAndNotifications = context.getCurrentXmlTest()
-					.getParameter("wantToBlockAdsAndNotifications");
-			incognitoMode = Boolean.parseBoolean(paramWantToBlockAdsAndNotifications);
-			logger.info("wantToBlockAdsAndNotifications: " + wantToBlockAdsAndNotifications);
+		// TO DISABLE ADS AND NOTIFICATIONS
+		String paramWantToBlockAdsAndNotifications = context.getCurrentXmlTest()
+				.getParameter("wantToBlockAdsAndNotifications");
+		wantToBlockAdsAndNotifications = Boolean.parseBoolean(paramWantToBlockAdsAndNotifications);
+		logger.info("wantToBlockAdsAndNotifications: " + wantToBlockAdsAndNotifications);
 
-		}
-
+	}
 
 	// to select the driver
 	@Parameters("browser")
-	@BeforeTest
+	@BeforeTest(dependsOnMethods = "browserSettingAndLogin")
 	public void Setup(String br) throws InterruptedException {
 		System.out.println("Current thread name: " + Thread.currentThread().getName());
 
@@ -112,7 +113,8 @@ public class BaseClass {
 			// logger.info("2");
 
 			// TO INITIALIZE CHROME DRIVER
-			driver = new ChromeDriver(cco.customizedChromeOptions(true, false, false, true, 9222, false, fileLocation));
+			driver = new ChromeDriver(cco.customizedChromeOptions(wantToBlockAdsAndNotifications, headerLessBrowsing,
+					incognitoMode, wantToEnableDebuggerMode, debuggerPort, wantToTakeActionOnFile, fileLocation));
 
 			logger.info("Chrome driver selected");
 		} else if (br.equalsIgnoreCase("firefox")) {
@@ -126,8 +128,13 @@ public class BaseClass {
 		}
 
 		// TO START BASE URL
-		driver.get(baseUrl);
-		logger.info("Login page started");
+		if (wantToEnableDebuggerMode) {
+			driver.get(baseUrlDebuggerMode);
+			logger.info("Login page started with Debugger mode");
+		} else {
+			driver.get(baseUrl);
+			logger.info("Login page started");
+		}
 
 		// TO MAXIMISE WINDOW
 		driver.manage().window().maximize();
@@ -137,48 +144,39 @@ public class BaseClass {
 	}
 
 	// TO LOGIN
-	@Parameters("paramtersfromtestNg")
+	@Parameters("userType")
 	@BeforeClass()
-	public void Login(String paramtersfromtestNg) throws InterruptedException {
-		String[] paramters = paramtersfromtestNg.split(",");
-        String loginUserType = paramters[0];
-        String isDebuggerMode = paramters[1];
-        logger.info("loginUserType: "+loginUserType +" And "+"isDebuggerMode: "+isDebuggerMode);
-        
-		 if(!isDebuggerMode.equals("true")) {
-			 if (loginUserType.equalsIgnoreCase("user")) {
-					lp = new PO_LoginPage(driver);
-					logger.info("Login user Email: " + userEmail + " and Password: " + userPassword);
-					hp = lp.Login(userEmail, userPassword);
-				}
-		 }
+	public void Login(String loginUserType) throws InterruptedException {
+		logger.info("loginUserType: " + loginUserType);
+		if (!wantToByPassLoginLogout) {
+			if (loginUserType.equalsIgnoreCase("user")) {
+				lp = new PO_LoginPage(driver);
+				logger.info("Login user Email: " + userEmail + " and Password: " + userPassword);
+				hp = lp.Login(userEmail, userPassword);
+			}
+		}
 	}
 
 	// TO LOGOUT
-	@Parameters("paramtersfromtestNg")
+	@Parameters("userType")
 	@AfterTest()
-	public void Logout(String paramtersfromtestNg) throws InterruptedException {
-		String[] paramters = paramtersfromtestNg.split(",");
-        String loginUserType = paramters[0];
-        String isDebuggerMode = paramters[1];
-		if(!isDebuggerMode.equals("true")) {
+	public void Logout(String loginUserType) throws InterruptedException {
+		if (wantToByPassLoginLogout) {
 			if (loginUserType.equalsIgnoreCase("user")) {
-				hp.UserLogout();
+				try {
+					hp.UserLogout();
+				} catch (Exception e) {
+					logger.warn("Exception From: Logout >> " + e.getMessage());
+				}
 			}
 		}
 	}
 
 	// TO CLOSE THE DIRVER
-	@Parameters("paramtersfromtestNg")
 	@AfterTest(dependsOnMethods = "Logout")
-	public void Teardown(String paramtersfromtestNg) {
-		String[] paramters = paramtersfromtestNg.split(",");
-        String loginUserType = paramters[0];
-        String isDebuggerMode = paramters[1];
-		if(!isDebuggerMode.equals("true")) {
-			driver.quit();
-			logger.info("Driver shutdown");
-		}
+	public void Teardown() {
+		driver.quit();
+		logger.info("Driver shutdown");
 	}
 
 	// TO GENERATES RANDOM STRING HAVING LENGTH 6 CHARACTER
