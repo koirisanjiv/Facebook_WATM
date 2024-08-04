@@ -3,11 +3,14 @@
 #AutoIt3Wrapper_UseX64=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
+$fileAddress=placeHodlerFilePath
+$fileNameWithExtenstion=placeHolderFileNameWithExtenstion
+
 ControlFocus("Open", "", "ToolbarWindow323")
-ControlSetText("Open", "", "ToolbarWindow323", "C:\Users\koiri\Downloads\LeonardoAI")
+ControlSetText("Open", "", "ToolbarWindow323", $fileAddress)
 Sleep(500)
 ControlFocus("Open", "", "Edit1")
 Sleep(2000)
-ControlSetText("Open", "", "Edit1", "lord-hanuman-8535687.png")
+ControlSetText("Open", "", "Edit1", $fileNameWithExtenstion)
 Sleep(500)
 ControlClick("Open", "", "Button1")

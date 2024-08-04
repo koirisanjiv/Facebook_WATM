@@ -161,7 +161,7 @@ public class BaseClass {
 	@Parameters("userType")
 	@AfterTest()
 	public void Logout(String loginUserType) throws InterruptedException {
-		if (wantToByPassLoginLogout) {
+		if (!wantToByPassLoginLogout) {
 			if (loginUserType.equalsIgnoreCase("user")) {
 				try {
 					hp.UserLogout();

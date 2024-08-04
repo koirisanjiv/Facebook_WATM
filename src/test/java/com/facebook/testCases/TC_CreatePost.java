@@ -28,18 +28,20 @@ public class TC_CreatePost extends BaseClass {
 
 	// VARIABLES
 	String writeYourDescriptionAndTags = "Create a cute baby";
-	String filePath = "LeonardoAI\\1234.jpg";
+	//String filePath = "LeonardoAI\\1234.jpg";
+	String uploadFileAddress = "C:\\Users\\koiri\\Downloads\\LeonardoAI";
+    String uploadFileName = "Default_Create_a_girl_listening_a_mind_relaxing_mind_she_will_1";
+
 	public FindFileAndRename findFileandRename = new FindFileAndRename();
 
 	// TO GENERATE NEW POST
 	@Test(priority = 1)
 	public void test_CreatePost() throws Throwable {
 		po_cp = callMeBeforePerformAnyAction();
-		po_cp.createNewPost(writeYourDescriptionAndTags, filePath);
+		po_cp.createNewPost(writeYourDescriptionAndTags,uploadFileAddress,uploadFileName);
 	}
 
 	
-
 	// CALL ME IN EVERY @TEST METHODS EXCEPT LOGIN AND LOGOUT
 	public PO_CreatePage callMeBeforePerformAnyAction() throws InterruptedException {
 		// TO ACCESS ANY ELEMENT IT CHECK IT IS COME BACK ON THE HOME PAGE FIRST

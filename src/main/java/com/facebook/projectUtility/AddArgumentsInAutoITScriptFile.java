@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 public class AddArgumentsInAutoITScriptFile {
 	private static final Logger logger = LogManager.getLogger(AddArgumentsInAutoITScriptFile.class);
 
-	public static boolean setFileDirectoryAndName(String uploadFileAddress, String uploadFileName)
+	public static boolean setFileDirectoryAndName(String uploadFileAddress, String uploadFileName, boolean isExeFileCreated)
 			throws InterruptedException {
 		StackTraceElement stackTraceElement[] = Thread.currentThread().getStackTrace();
 		String callerMethodName = stackTraceElement[2].getMethodName();
@@ -20,17 +20,23 @@ public class AddArgumentsInAutoITScriptFile {
 		try {
 			String autoItScriptFileAddress = "./" + "\\AutoIT" + "\\autoITScript.au3";
 			// Read the existing content of the .au3 file
+			logger.info("autoItScriptFileAddress: "+autoItScriptFileAddress);
 			String content = new String(Files.readAllBytes(Paths.get(autoItScriptFileAddress)));
 
-			// Replace placeholders with actual values
-			content = content.replace("$sDir", "\"" + uploadFileAddress + "\"");
-			content = content.replace("$sFileName", "\"" + uploadFileName + "\"");
-
+			if (isExeFileCreated) {
+				content = content.replace("placeHodlerFilePath", "\"" + uploadFileAddress + "\"");
+				content = content.replace("placeHolderFileNameWithExtenstion", "\"" + uploadFileName + "\"");
+				logger.info("AutoIt script updated with filePath and fileName"+ uploadFileAddress+"\\"+uploadFileName);
+			} else {
+				content = content.replace("\""+uploadFileAddress+"\"", "placeHodlerFilePath");
+				content = content.replace("\""+uploadFileName+"\"","placeHolderFileNameWithExtenstion");
+				logger.info("AutoIt script code change from updated file to original file");
+			}
 			// Write the updated content back to the file
 			Files.write(Paths.get(autoItScriptFileAddress), content.getBytes(), StandardOpenOption.WRITE,
 					StandardOpenOption.TRUNCATE_EXISTING);
 
-			System.out.println("AutoIt script updated successfully.");
+			logger.info("AutoIt script updated successfully.");
 			Thread.sleep(2000);
 			return true;
 		} catch (IOException e) {
@@ -43,7 +49,7 @@ public class AddArgumentsInAutoITScriptFile {
 
 		String fileAddress = "C:\\Users\\koiri\\Downloads\\LeonardoAI";
 		String filename = "lord-hanuman-8535687.png";
-		setFileDirectoryAndName(fileAddress, filename);
+		setFileDirectoryAndName(fileAddress, filename, true);
 	}
 
 }
