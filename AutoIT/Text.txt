@@ -1,0 +1,2 @@
+uploadFileAddress=C:\\Users\\koiri\\Downloads\\LeonardoAI
+uploadFileName=1234

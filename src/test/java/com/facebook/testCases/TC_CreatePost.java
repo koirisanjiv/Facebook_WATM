@@ -28,9 +28,10 @@ public class TC_CreatePost extends BaseClass {
 
 	// VARIABLES
 	String writeYourDescriptionAndTags = "Create a cute baby";
+	String fileAddress = "D:\\Eclipse Project\\WebAutomation\\Facebook_WATM\\AutoIT\\Text.txt";
 	//String filePath = "LeonardoAI\\1234.jpg";
-	String uploadFileAddress = "C:\\Users\\koiri\\Downloads\\LeonardoAI";
-    String uploadFileName = "Default_Create_a_girl_listening_a_mind_relaxing_mind_she_will_1";
+//	String uploadFileAddress = "C:\\Users\\koiri\\Downloads\\LeonardoAI";
+//    String uploadFileName = "Default_Create_a_girl_listening_a_mind_relaxing_mind_she_will_1";
 
 	public FindFileAndRename findFileandRename = new FindFileAndRename();
 
@@ -38,7 +39,7 @@ public class TC_CreatePost extends BaseClass {
 	@Test(priority = 1)
 	public void test_CreatePost() throws Throwable {
 		po_cp = callMeBeforePerformAnyAction();
-		po_cp.createNewPost(writeYourDescriptionAndTags,uploadFileAddress,uploadFileName);
+		po_cp.createNewPost(writeYourDescriptionAndTags,fileAddress);
 	}
 
 	

@@ -219,7 +219,7 @@ public class PO_CreatePage extends ReUseAbleElement {
 	// ======END======PAGE OBJECT FOR ADD USERS LEBELS ACTOIN METHODS==========//
 
 	// TO CREATE A POST
-	public PO_CreatePage createNewPost(String writeDescriptionTags, String uploadFileAddress,String uploadFileName) throws Throwable {
+	public PO_CreatePage createNewPost(String writeDescriptionTags, String fileAddress) throws Throwable {
 
 		StackTraceElement stackTrace[] = Thread.currentThread().getStackTrace();
 		String callerMethodName = stackTrace[2].getMethodName();
@@ -229,8 +229,8 @@ public class PO_CreatePage extends ReUseAbleElement {
 		clickOnBtnAddToYourPost();
 		clickOnIconPhotoVideo();
 		clickOnBtnAddPhotoVideo();
-	
-		if(uploadFileFromSystem(uploadFileAddress,uploadFileName)){
+
+		if(uploadFileFromSystem(fileAddress)){
 			try {
 				logger.info("Wait for next 10 seconds");
 				Thread.sleep(10000);
@@ -246,7 +246,7 @@ public class PO_CreatePage extends ReUseAbleElement {
 	}
 
 	// TO UPLOAD IMAGE
-	public boolean uploadFileFromSystem(String uploadFileAddress,String uploadFileName) throws InterruptedException, IOException {
+	public boolean uploadFileFromSystem(String fileAddress) throws InterruptedException, IOException {
 		StackTraceElement stackTrace[] = Thread.currentThread().getStackTrace();
 		String callerMethodName = stackTrace[2].getMethodName();
 		logger.info("Method called uploadFileFromSystem and Caller methods name: " + callerMethodName);
@@ -259,7 +259,7 @@ public class PO_CreatePage extends ReUseAbleElement {
 //	        Process process = processBuilder.start();
 //	        process.waitFor();
 			Thread.sleep(3000);
-			UploadFileWithAutoIT.uploadFileWithAutoIT(uploadFileAddress,uploadFileName);
+			UploadFileWithAutoIT.uploadFileWithAutoIT(fileAddress);
 	        isfileUplaoded = true;
 		}catch(Exception e) {logger.info("Exception uploadFileFromSystem: "+e.getMessage());}
         

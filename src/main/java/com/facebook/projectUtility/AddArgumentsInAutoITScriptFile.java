@@ -25,11 +25,11 @@ public class AddArgumentsInAutoITScriptFile {
 
 			if (isExeFileCreated) {
 				content = content.replace("placeHodlerFilePath", "\"" + uploadFileAddress + "\"");
-				content = content.replace("placeHolderFileNameWithExtenstion", "\"" + uploadFileName + "\"");
+				content = content.replace("placeHodlerFileName", "\"" + uploadFileName + "\"");
 				logger.info("AutoIt script updated with filePath and fileName"+ uploadFileAddress+"\\"+uploadFileName);
 			} else {
 				content = content.replace("\""+uploadFileAddress+"\"", "placeHodlerFilePath");
-				content = content.replace("\""+uploadFileName+"\"","placeHolderFileNameWithExtenstion");
+				content = content.replace("\""+uploadFileName+"\"","placeHodlerFileName");
 				logger.info("AutoIt script code change from updated file to original file");
 			}
 			// Write the updated content back to the file

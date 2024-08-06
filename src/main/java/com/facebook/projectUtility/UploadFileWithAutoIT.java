@@ -3,6 +3,7 @@ package com.facebook.projectUtility;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,22 +11,37 @@ import org.apache.logging.log4j.Logger;
 public class UploadFileWithAutoIT {
 	private static final Logger logger = LogManager.getLogger(UploadFileWithAutoIT.class);
 
-	public static void uploadFileWithAutoIT(String uploadFileAddress, String uploadFileName) {
+	public static void uploadFileWithAutoIT(String fileAddress) {
 		StackTraceElement stackTraceElement[] = Thread.currentThread().getStackTrace();
 		String callerMethodName = stackTraceElement[2].getMethodName();
 		logger.info("Method called uploadFileWithAutoIT & caller method name: " + callerMethodName);
+		
 		String autoItExecutableName = "autoITApplication.exe";
 		String autoItExecutablePath = System.getProperty("user.dir") + "\\AutoIT\\" + autoItExecutableName;
 		logger.info("autoItExecutablePath: " + autoItExecutablePath);
+		logger.info("Text file address: "+fileAddress);
+		
+		Map<String, String> values = ReadKeyAndValuesFromTxtFile.readValuesFromFile(fileAddress);
+		System.out.println(values);
+		String uploadFileAddress = values.get("uploadFileAddress");
+		String uploadFileName = values.get("uploadFileName");
+		
 
 		try {
 			Thread.sleep(2000);
 			// Update the autoIT script
 			logger.info("uploadFileAddress: " + uploadFileAddress);
 			logger.info("uploadFileName: " + uploadFileName);
+			
+			logger.info("AutoIT script before update");
+			ReadKeyAndValuesFromTxtFile.readValuesFromFile(System.getProperty("user.dir") + "\\AutoIT\\autoITScript.au3");
+			
 			AddArgumentsInAutoITScriptFile.setFileDirectoryAndName(uploadFileAddress, uploadFileName,true);
 			Thread.sleep(3000);
-
+			
+			logger.info("AutoIT script after update");
+			ReadKeyAndValuesFromTxtFile.readValuesFromFile(System.getProperty("user.dir") + "\\AutoIT\\autoITScript.au3");
+			
 			// Compile the autoIT script
 			OpenCMDAndRunBatFile.openCMDAndRunBatFile(System.getProperty("user.dir") + "\\AutoIT", "AutoIT.bat");
 			Thread.sleep(5000);
